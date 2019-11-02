@@ -37,7 +37,7 @@ class UserController extends Controller
 
         $data = request()->validate([
             'name' => 'required',
-            'email' => 'required|email|unique:users,email,'.$user->id,
+            'email' => 'required',
             'password' => 'required',
         ], [
             'name.required' => 'El campo nombre es obligatorio'
@@ -61,7 +61,7 @@ class UserController extends Controller
     {
         $data = request()->validate([
             'name' => 'required',
-            'email' => ['required', 'email', Rule::unique('users')->ignore($user->id)],
+            'email' => ['required', 'email'],
             'password' => '',
         ]);
 
@@ -75,5 +75,12 @@ class UserController extends Controller
 
         return redirect()->route('users.show', ['user' => $user]);
 
+    }
+
+    function destroy(User $user)
+    {
+        $user->delete();
+         
+        return redirect()->route('users.index');
     }
 }
